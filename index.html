@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIVET - Terminal Veterinario (Versión Clásica)</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="d-flex flex-column vh-100">
+        
+        <!-- FONDO CON IMAGEN -->
+        <div id="background-layer">
+            <img src="images/vetelocalacentuado.PNG" alt="CIVET Background" class="background-image">
+        </div>
+
+        <!-- HEADER / TERMINAL -->
+        <header class="terminal-header">
+            <div class="logo">
+                <img src="images/logocivet3sinfondo.png" alt="Civet Logo">
+            </div>
+            <nav id="navigation">
+                <a href="#" class="nav-link" data-module="inicio">inicio</a>
+                <a href="#" class="nav-link" data-module="quienes-somos">quienes-somos</a>
+                <a href="#" class="nav-link" data-module="pacientes">pacientes</a>
+                <a href="#" class="nav-link" data-module="contacto">contacto</a>
+                <a href="#" class="nav-link" data-module="carrito">🛒 tienda</a>
+            </nav>
+        </header>
+
+        <!-- MAIN CONTENT / CANVAS -->
+        <main class="flex-grow-1 overflow-auto">
+            <div id="modules">
+                <!-- Módulo Inicio -->
+                <div id="module-inicio" class="module">
+                    <main class="hero-content">
+                        <div class="hero-text">
+                            <h1>Bienvenido a CIVET</h1>
+                            <p class="hero-description">La salud de tu mascota es nuestra prioridad. Ofrecemos atención integral con profesionales apasionados por los animales.</p>
+                            <a href="#" class="cta-button" data-module="contacto">Pedir un Turno</a>
+                        </div>
+                    </main>
+                </div>
+
+                <!-- Módulo Quienes Somos -->
+                <div id="module-quienes-somos" class="module" style="display: none;">
+                    <h2>Cuidamos de tu familia como si fuera la nuestra.</h2>
+                    <p class="mt-3">
+                        En CIVET, entendemos que no son solo mascotas; son compañeros de vida, guardianes de secretos y una parte insustituible de tu familia. Con esa convicción, hemos construido nuestro legado: un lugar donde la calidez del hogar se encuentra con la excelencia médica.
+                    </p>
+                    <p>
+                        Nuestro equipo está formado por los mejores profesionales, no solo por su conocimiento, sino por su empatía y dedicación. Ofrecemos todas las especialidades para garantizar que, sin importar el desafío, tu compañero reciba el cuidado integral que merece en cada etapa de su vida. Bienvenidos a nuestra casa, donde cada paciente es tratado con el respeto y el amor que le das en la tuya.
+                    </p>
+                </div>
+
+                <!-- Módulo Pacientes (CRUD) -->
+                <div id="module-pacientes" class="module" style="display: none;">
+                    <h2>Gestor de Mascotitas Bonitas</h2>
+                    <div class="card p-3 bg-dark-transparent">
+                        <h5 class="mb-3">Añadir Nueva Mascotita</h5>
+                        <form id="form-paciente">
+                            <div class="mb-3">
+                                <input type="text" id="nombre-paciente" class="form-control" placeholder="Nombre de la mascota" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" id="especie-paciente" class="form-control" placeholder="Especie (Ej: Perro, Gato)" required>
+                            </div>
+                            <button type="submit" class="btn btn-professional">Añadir Paciente</button>
+                        </form>
+                    </div>
+                    <hr class="my-4">
+                    <h5 class="mb-3">Lista de Pacientes</h5>
+                    <div id="lista-pacientes" class="row">
+                        <!-- Los pacientes se renderizarán aquí -->
+                    </div>
+                </div>
+
+                <!-- Módulo Contacto -->
+                <div id="module-contacto" class="module" style="display: none;">
+                    <h2>Contacto</h2>
+                    <p>Puedes encontrarnos en Calle Falsa 123.</p>
+                    <p>📞 Teléfono: (261) 555-1234</p>
+                    <p>📧 Email: contacto@civet.com.ar</p>
+                    <p>📍 Dirección: Calle Falsa 123, Mendoza</p>
+                </div>
+
+                <!-- Módulo Carrito -->
+                <div id="module-carrito" class="module" style="display: none;">
+                    <h2 class="mb-4">🛒 Tienda Veterinaria</h2>
+                    <p class="lead mb-4">Encuentra todo lo que necesitas para el cuidado de tu mascota</p>
+                    
+                    <div class="row g-4">
+                        <!-- PRODUCTOS DISPONIBLES -->
+                        <div class="col-lg-8">
+                            <div class="card p-4 bg-dark-transparent shadow-lg">
+                                <h4 class="mb-4">Productos Disponibles</h4>
+                                <div id="productos-disponibles" class="row g-3">
+                                    <!-- Los productos se renderizarán aquí -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- CARRITO -->
+                        <div class="col-lg-4">
+                            <div class="card p-4 bg-dark-transparent shadow-lg sticky-top" style="top: 20px;">
+                                <h4 class="mb-4">🛒 Mi Carrito</h4>
+                                <div id="items-carrito" style="max-height: 400px; overflow-y: auto;">
+                                    <p class="text-muted">El carrito está vacío</p>
+                                </div>
+                                <hr class="my-3">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <strong class="fs-5">Total:</strong>
+                                    <strong id="total-carrito" class="text-success fs-3">$0.00</strong>
+                                </div>
+                                <button id="btn-vaciar-carrito" class="btn btn-professional w-100 mb-2">Vaciar Carrito</button>
+                                <button id="btn-finalizar-compra" class="btn btn-professional w-100">Finalizar Compra</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="terminal-footer p-2 text-center">
+            <p class="mb-0">&copy; 2025 CIVET (Centro Integral Veterinario). Todos los derechos reservados. Versión Clásica para fines académicos.</p>
+        </footer>
+    </div>
+
+    <!-- WhatsApp Panic Button -->
+    <a href="#" class="whatsapp-panic">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16">
+            <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.068-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.1-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+        </svg>
+    </a>
+
+    <!-- jQuery y Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>

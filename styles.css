@@ -1,0 +1,942 @@
+/* OPERACIÓN CAMALEÓN - CIVET REDISEÑADO 💚 */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root {
+    --civet-green: #32CD32;
+    --civet-dark-green: #228B22;
+    --civet-forest: #1a5f1a;
+    --civet-black: #0a0a0a;
+    --civet-white: #FFFFFF;
+    --civet-gray: #e8e8e8;
+    --lime-electric: #a3ff00;
+    --lime-soft: #c8ff8e;
+    --shadow-soft: rgba(0, 0, 0, 0.1);
+    --shadow-medium: rgba(0, 0, 0, 0.15);
+    --shadow-strong: rgba(0, 0, 0, 0.25);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    overflow-y: hidden !important;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden !important; /* Sin scroll en absoluto */
+    width: 100vw;
+    max-width: 100%;
+}
+
+body {
+    background: linear-gradient(135deg, 
+        #1a4d1a 0%,
+        #0d2d0d 25%, 
+        #1a5a1a 50%,
+        #0d2d0d 75%,
+        #1a4d1a 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 30s ease infinite;
+    color: #333;
+    font-family: 'Poppins', 'IBM Plex Sans', system-ui, sans-serif;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden !important;
+}
+
+@keyframes gradientShift {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+/* CAPA DE FONDO CON IMAGEN */
+#background-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.background-image {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: auto;
+    height: 100%;
+    transform: translateY(-50%);
+    object-fit: cover;
+    filter: grayscale(20%) brightness(0.7); /* Más color y más brillo */
+    opacity: 0.85; /* Control de opacidad adicional */
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 15% 20%, rgba(50, 205, 50, 0.35) 0%, transparent 30%),
+        radial-gradient(circle at 85% 80%, rgba(163, 255, 0, 0.3) 0%, transparent 30%),
+        radial-gradient(circle at 50% 50%, rgba(34, 139, 34, 0.25) 0%, transparent 45%),
+        linear-gradient(180deg, rgba(50, 205, 50, 0.15) 0%, rgba(10, 10, 10, 0) 50%, rgba(50, 205, 50, 0.12) 100%);
+    background-size: 100% 100%, 100% 100%, 150% 150%, 100% 100%;
+    animation: breatheBackground 20s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes breatheBackground {
+    0%, 100% { 
+        opacity: 1;
+        background-size: 100% 100%, 100% 100%, 150% 150%, 100% 100%;
+    }
+    50% { 
+        opacity: 0.85;
+        background-size: 110% 110%, 110% 110%, 160% 160%, 100% 100%;
+    }
+}
+
+/* PARTÍCULAS FLOTANTES - AHORA MÁS SUTILES EN EL FONDO GENERAL */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle, rgba(50, 205, 50, 0.15) 1px, transparent 1px),
+        radial-gradient(circle, rgba(163, 255, 0, 0.1) 1px, transparent 1px);
+    background-size: 200px 200px, 180px 180px;
+    background-position: 0 0, 40px 60px;
+    animation: floatParticles 60s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.3;
+}
+
+@keyframes floatParticles {
+    0% {
+        transform: translateY(0) translateX(0);
+    }
+    50% {
+        transform: translateY(-20px) translateX(10px);
+    }
+    100% {
+        transform: translateY(0) translateX(0);
+    }
+}
+
+/* MÓDULO INICIO - CONTENEDOR */
+#module-inicio {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 1; /* Por encima del fondo, debajo del navbar/footer */
+}
+
+/* EFECTO DE LUCES PARPADEANTES (como luces de consultorio sutiles) */
+#module-inicio::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* OTROS MÓDULOS CON FONDO BLANCO */
+#module-quienes-somos,
+#module-pacientes,
+#module-contacto,
+#module-carrito {
+    background: #ffffff;
+    padding: 3rem 2rem;
+    min-height: calc(100vh - 62px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-width: 100%;
+}
+
+.terminal-header {
+    background: rgba(26, 26, 26, 0.7); /* Más transparente para flotar */
+    backdrop-filter: blur(15px) saturate(180%);
+    -webkit-backdrop-filter: blur(15px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+    position: relative;
+    z-index: 100; /* Por encima de la imagen */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 2rem;
+}
+
+.terminal-header .logo img {
+    height: 45px;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+    transition: transform 0.3s ease;
+}
+
+.terminal-header .logo img:hover {
+    transform: scale(1.05);
+}
+
+.terminal-header nav {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.terminal-header .nav-link {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: #f0f0f0;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.terminal-header .nav-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--civet-green) 0%, var(--civet-dark-green) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.terminal-header .nav-link:hover::before,
+.terminal-header .nav-link.active::before {
+    opacity: 1;
+}
+
+.terminal-header .nav-link:hover,
+.terminal-header .nav-link.active {
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(50, 205, 50, 0.4);
+}
+
+main {
+    color: var(--civet-black);
+    position: relative;
+    z-index: 1;
+    flex: 1; /* Ocupa todo el espacio disponible */
+    overflow: hidden;
+    max-width: 100%;
+}
+
+/* HERO CONTENT - ALINEADO A LA DERECHA */
+.hero-content {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 2rem 5rem;
+    height: 100%;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+}
+
+/* TEXTO A LA DERECHA CON EFECTOS ARTÍSTICOS */
+.hero-text {
+    max-width: 900px;
+    min-height: 650px;
+    color: #ffffff;
+    z-index: 10;
+    position: relative;
+    text-align: center; /* Centrado como en Word */
+    padding: 4rem 4rem;
+    margin-right: 80px;
+    background: linear-gradient(135deg, 
+        rgba(50, 205, 50, 0.18) 0%, 
+        rgba(46, 184, 46, 0.12) 50%, 
+        rgba(40, 164, 40, 0.18) 100%);
+    backdrop-filter: blur(20px);
+    border-radius: 30px;
+    border: 2px solid rgba(50, 205, 50, 0.4);
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(50, 205, 50, 0.15),
+        inset 0 0 40px rgba(50, 205, 50, 0.08);
+    overflow: hidden;
+    animation: floatPanel 12s ease-in-out infinite, pulseGlow 8s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+    0%, 100% {
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.5),
+            0 0 40px rgba(50, 205, 50, 0.15),
+            inset 0 0 40px rgba(50, 205, 50, 0.08);
+    }
+    50% {
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.5),
+            0 0 60px rgba(50, 205, 50, 0.25),
+            inset 0 0 50px rgba(50, 205, 50, 0.12);
+    }
+}
+
+/* PUNTITOS SOLO EN EL PANEL HERO */
+.hero-text::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle, rgba(163, 255, 0, 0.8) 3px, transparent 3px),
+        radial-gradient(circle, rgba(50, 205, 50, 0.75) 2.5px, transparent 2.5px),
+        radial-gradient(circle, rgba(200, 255, 142, 0.85) 3.5px, transparent 3.5px),
+        radial-gradient(circle, rgba(163, 255, 0, 0.7) 2px, transparent 2px);
+    background-size: 80px 80px, 120px 120px, 65px 65px, 100px 100px;
+    background-position: 0 0, 30px 40px, 60px 80px, 45px 95px;
+    animation: twinkle 15s ease-in-out infinite, floatParticlesPanel 40s linear infinite;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 1;
+    border-radius: 30px;
+}
+
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 1;
+    }
+    25% {
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 0.6;
+    }
+    75% {
+        opacity: 0.9;
+    }
+}
+
+@keyframes floatParticlesPanel {
+    0% {
+        background-position: 0 0, 30px 40px, 60px 80px, 45px 95px;
+    }
+    50% {
+        background-position: 10px -15px, 40px 25px, 70px 65px, 55px 80px;
+    }
+    100% {
+        background-position: 0 0, 30px 40px, 60px 80px, 45px 95px;
+    }
+}
+
+@keyframes floatPanel {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.hero-text::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent 0%,
+        rgba(50, 205, 50, 0.1) 25%,
+        rgba(163, 255, 0, 0.15) 50%,
+        rgba(50, 205, 50, 0.1) 75%,
+        transparent 100%
+    );
+    animation: rotateGradient 25s linear infinite;
+    z-index: -1;
+}
+
+@keyframes rotateGradient {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* PUNTITOS SOLO EN EL PANEL HERO (reemplazando el ::after anterior) */
+.hero-text::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle, rgba(163, 255, 0, 0.9) 3px, transparent 3px),
+        radial-gradient(circle, rgba(50, 205, 50, 0.85) 2.5px, transparent 2.5px),
+        radial-gradient(circle, rgba(200, 255, 142, 0.95) 3.5px, transparent 3.5px),
+        radial-gradient(circle, rgba(163, 255, 0, 0.8) 2px, transparent 2px);
+    background-size: 70px 70px, 100px 100px, 55px 55px, 85px 85px;
+    background-position: 0 0, 25px 35px, 50px 70px, 35px 80px;
+    animation: twinkle 15s ease-in-out infinite, floatParticlesPanel 40s linear infinite;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 1;
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 1;
+    }
+    25% {
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 0.6;
+    }
+    75% {
+        opacity: 0.9;
+    }
+}
+
+@keyframes floatParticlesPanel {
+    0% {
+        background-position: 0 0, 25px 35px, 50px 70px, 35px 80px;
+    }
+    50% {
+        background-position: 10px -12px, 35px 20px, 60px 55px, 45px 65px;
+    }
+    100% {
+        background-position: 0 0, 25px 35px, 50px 70px, 35px 80px;
+    }
+}
+
+.hero-text h1 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 4.5rem;
+    color: #a3ff00;
+    margin-bottom: 2rem;
+    line-height: 1.2;
+    text-shadow: 
+        0 0 20px rgba(163, 255, 0, 0.5),
+        0 0 40px rgba(163, 255, 0, 0.3),
+        3px 3px 6px rgba(0, 0, 0, 0.8);
+    position: relative;
+    z-index: 2;
+    animation: glowTitle 4.5s ease-in-out infinite;
+}
+
+@keyframes glowTitle {
+    0%, 100% { 
+        text-shadow: 0 0 20px rgba(163, 255, 0, 0.5), 0 0 40px rgba(163, 255, 0, 0.3), 3px 3px 6px rgba(0, 0, 0, 0.8); 
+    }
+    50% { 
+        text-shadow: 0 0 30px rgba(163, 255, 0, 0.7), 0 0 60px rgba(163, 255, 0, 0.5), 3px 3px 6px rgba(0, 0, 0, 0.8); 
+    }
+}
+
+.hero-text p {
+    font-size: 1.3rem;
+    line-height: 1.7;
+    color: #e0ffe0; /* Verde muy claro, casi blanco pero con tinte verde */
+    margin-bottom: 2rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    position: relative;
+    z-index: 2;
+}
+
+/* Párrafo específico para mejor legibilidad */
+.hero-text p.hero-description {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #c8ff8e; /* Verde suave y legible - lime-soft */
+    text-shadow: 
+        2px 2px 8px rgba(0, 0, 0, 0.95),
+        0 0 15px rgba(0, 0, 0, 0.8),
+        0 0 25px rgba(50, 205, 50, 0.3);
+    line-height: 1.9;
+    letter-spacing: 0.3px;
+    margin-bottom: 2.5rem;
+}
+
+.cta-button {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--civet-green) 0%, var(--lime-electric) 100%);
+    color: #1a1a1a; /* Texto oscuro sobre verde brillante */
+    padding: 1.3rem 2.5rem;
+    border-radius: 15px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.3rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        0 4px 15px rgba(50, 205, 50, 0.4),
+        0 0 30px rgba(163, 255, 0, 0.3);
+    border: 2px solid transparent;
+    position: relative;
+    z-index: 2;
+    text-shadow: none;
+}
+
+.cta-button:hover {
+    background: linear-gradient(135deg, var(--lime-electric) 0%, var(--civet-green) 100%);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 
+        0 6px 25px rgba(50, 205, 50, 0.6),
+        0 0 50px rgba(163, 255, 0, 0.5);
+    color: #000000;
+}
+
+.module {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.module h2 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    color: var(--civet-black);
+    font-size: 2rem;
+    border-bottom: none;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    display: inline-block;
+}
+
+.module h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--civet-black) 0%, transparent 100%);
+    border-radius: 2px;
+}
+
+.bg-dark-transparent {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.btn-professional {
+    background: linear-gradient(135deg, var(--civet-black) 0%, var(--civet-forest) 100%);
+    border: none;
+    color: var(--civet-white);
+    font-weight: 600;
+    padding: 0.7rem 1.5rem;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-professional::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-professional:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-professional:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    color: var(--lime-electric);
+}
+
+.btn-professional:active {
+    transform: translateY(0);
+}
+
+.btn-delete {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    border: none;
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(220, 53, 69, 0.3);
+}
+
+.btn-delete:hover {
+    background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+}
+
+.terminal-footer {
+    background: rgba(26, 26, 26, 0.7); /* Más transparente para flotar */
+    backdrop-filter: blur(15px) saturate(180%);
+    -webkit-backdrop-filter: blur(15px) saturate(180%);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.9rem;
+    color: #a0a0a0;
+    box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.4);
+    position: relative;
+    z-index: 100; /* Por encima de la imagen */
+    padding: 1.2rem;
+}
+
+.whatsapp-panic {
+    position: fixed;
+    bottom: 5rem; /* Más arriba para no chocar con el footer */
+    right: 2rem;
+    z-index: 150; /* Por encima de todo, incluso del footer */
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, #25D366 0%, #1ea952 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 30px rgba(37, 211, 102, 0.5);
+    color: white;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 6px 30px rgba(37, 211, 102, 0.5);
+    }
+    50% {
+        box-shadow: 0 6px 40px rgba(37, 211, 102, 0.7);
+    }
+}
+
+.whatsapp-panic:hover {
+    transform: scale(1.15) rotate(5deg);
+    color: white;
+    box-shadow: 0 8px 40px rgba(37, 211, 102, 0.6);
+    animation: none;
+}
+
+.card-paciente {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.card-paciente:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(50, 205, 50, 0.15);
+    border-color: var(--civet-green);
+}
+
+.card-paciente .card-title {
+    font-weight: 600;
+    color: var(--civet-black);
+    font-size: 1.3rem;
+}
+
+.card-paciente .card-text {
+    color: rgba(0, 0, 0, 0.8);
+    font-weight: 400;
+}
+
+/* INPUTS Y FORMS MEJORADOS */
+.form-control {
+    background: #ffffff;
+    border: 2px solid rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    color: var(--civet-black);
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.form-control::placeholder {
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.form-control:focus {
+    background: #ffffff;
+    border-color: var(--civet-green);
+    box-shadow: 0 0 0 0.2rem rgba(50, 205, 50, 0.15);
+    outline: none;
+}
+
+/* IMÁGENES MEJORADAS */
+.module img {
+    border-radius: 20px;
+    box-shadow: 0 10px 40px var(--shadow-medium);
+    transition: transform 0.3s ease;
+}
+
+.module img:hover {
+    transform: scale(1.02);
+}
+
+/* TEXTOS Y PÁRRAFOS */
+.module p {
+    line-height: 1.7;
+    font-size: 1.05rem;
+    color: rgba(0, 0, 0, 0.85);
+}
+
+/* RESPONSIVIDAD */
+@media (max-width: 768px) {
+    .terminal-header {
+        flex-direction: column;
+        padding: 1rem;
+        gap: 1rem;
+    }
+    
+    .terminal-header nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.4rem;
+    }
+    
+    .terminal-header .nav-link {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+    }
+    
+    /* HERO RESPONSIVO */
+    .hero-content {
+        padding: 2rem 1.5rem;
+    }
+    
+    .hero-text {
+        max-width: 100%;
+    }
+    
+    .hero-text h1 {
+        font-size: 2.5rem;
+    }
+    
+    .hero-text p {
+        font-size: 1.1rem;
+    }
+    
+    .background-image {
+        width: 100%;
+        height: auto;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
+    .module h2 {
+        font-size: 1.6rem;
+    }
+    
+    .whatsapp-panic {
+        width: 56px;
+        height: 56px;
+        bottom: 1.5rem;
+        right: 1.5rem;
+    }
+}
+
+/* LOADING ANIMATION (bonus) */
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+.card-paciente::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: left 0.5s;
+}
+
+.card-paciente:hover::before {
+    left: 100%;
+}
+
+/* SCROLLBAR PERSONALIZADA - OCULTA */
+::-webkit-scrollbar {
+    width: 0px;
+    display: none;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+    display: none;
+}
+
+::-webkit-scrollbar-thumb {
+    background: transparent;
+    display: none;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: transparent;
+    display: none;
+}
+
+/* Para Firefox */
+html {
+    scrollbar-width: none;
+}
+
+body {
+    -ms-overflow-style: none;
+}
+
+/* ESTILOS DEL CARRITO DE COMPRAS */
+.carrito-item {
+    transition: all 0.3s ease;
+}
+
+.carrito-item:hover {
+    background: rgba(50, 205, 50, 0.05);
+    border-radius: 8px;
+    padding: 0.5rem;
+    margin: -0.5rem;
+}
+
+.btn-group .btn {
+    min-width: 35px;
+}
+
+#total-carrito {
+    color: var(--civet-green) !important;
+    font-weight: 700;
+}
+
+.sticky-top {
+    position: sticky;
+    top: 20px;
+}
+
+/* Animación al agregar producto */
+@keyframes addToCart {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.btn-agregar:active {
+    animation: addToCart 0.3s ease;
+}
+
+/* Alerta de compra finalizada */
+.alert-success {
+    border-radius: 15px;
+    border-left: 5px solid var(--civet-green);
+    box-shadow: 0 4px 15px rgba(50, 205, 50, 0.2);
+}
+
+/* ESTILOS MEJORADOS PARA MÓDULO CARRITO */
+#module-carrito {
+    padding: 3rem 2rem;
+}
+
+#module-carrito .lead {
+    font-size: 1.15rem;
+    color: rgba(0, 0, 0, 0.7);
+}
+
+#module-carrito h4 {
+    font-weight: 700;
+    color: var(--civet-black);
+}
+
+#module-carrito .card {
+    border: 2px solid rgba(50, 205, 50, 0.2);
+}
+
+#module-carrito .shadow-lg {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Hacer productos más grandes */
+#productos-disponibles .col-md-6 {
+    transition: transform 0.3s ease;
+}
+
+#productos-disponibles .card-body {
+    padding: 1.5rem;
+}
+
+#productos-disponibles .card-body h6 {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+#productos-disponibles .card-body .fs-5 {
+    font-size: 1.5rem !important;
+}
+
