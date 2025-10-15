@@ -8,6 +8,30 @@
   ],
   "routes": [
     {
+      "src": "/styles.css",
+      "dest": "/styles.css"
+    },
+    {
+      "src": "/app.js",
+      "dest": "/app.js"
+    },
+    {
+      "src": "/images/(.*)",
+      "dest": "/images/$1"
+    },
+    {
+      "src": "/models/(.*)",
+      "dest": "/models/$1"
+    },
+    {
+      "src": "/views/(.*)",
+      "dest": "/views/$1"
+    },
+    {
+      "src": "/controllers/(.*)",
+      "dest": "/controllers/$1"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }
