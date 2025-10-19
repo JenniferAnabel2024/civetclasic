@@ -17,10 +17,10 @@ class PacienteView {
             const pacienteCardHtml = `
                 <div class="col-md-6 col-lg-4 mb-4">
                     <div class="card card-paciente h-100">
+                        <img src="images/${paciente.imagen}" class="card-img-top" alt="${paciente.nombre}" style="height: 300px; object-fit: contain; background: #000000;">
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title">${paciente.nombre}</h5>
                             <p class="card-text flex-grow-1">Especie: ${paciente.especie}</p>
-                            <button class="btn btn-sm btn-delete mt-auto" data-id="${index}">Eliminar</button>
                         </div>
                     </div>
                 </div>

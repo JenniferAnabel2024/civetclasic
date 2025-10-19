@@ -2,9 +2,11 @@
 class PacienteModel {
     constructor() {
         this.pacientes = [
-            { nombre: 'Rex', especie: 'Perro' },
-            { nombre: 'Mishi', especie: 'Gato' },
-            { nombre: 'Piolín', especie: 'Canario' }
+            { nombre: 'Rex', especie: 'Canino', imagen: 'perro.jpg' },
+            { nombre: 'Mishi', especie: 'Felino', imagen: 'gato.jpg' },
+            { nombre: 'Pepo', especie: 'Felino', imagen: 'gatobebe.jpg' },
+            { nombre: 'Whiskers', especie: 'Felino', imagen: 'gato2.jpg' },
+            { nombre: 'Sponge', especie: 'Canino', imagen: 'perroesponjoso.jpg' }
         ];
     }
 

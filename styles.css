@@ -169,12 +169,12 @@ body::after {
     z-index: 1;
 }
 
-/* OTROS MÓDULOS CON FONDO BLANCO */
+/* OTROS MÓDULOS CON FONDO VERDE */
 #module-quienes-somos,
 #module-pacientes,
 #module-contacto,
 #module-carrito {
-    background: #ffffff;
+    background: rgba(50, 205, 50, 0.15) !important;
     padding: 3rem 2rem;
     min-height: calc(100vh - 62px);
     overflow-y: auto;
@@ -196,10 +196,19 @@ body::after {
     padding: 0.8rem 2rem;
 }
 
+.terminal-header .logo {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 0.5rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
 .terminal-header .logo img {
-    height: 45px;
-    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+    height: 60px;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3)) drop-shadow(0 0 20px rgba(50, 205, 50, 0.5));
     transition: transform 0.3s ease;
+    animation: glowLogo 4s ease-in-out infinite;
 }
 
 .terminal-header .logo img:hover {
@@ -466,6 +475,15 @@ main {
     }
 }
 
+@keyframes glowLogo {
+    0%, 100% { 
+        filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3)) drop-shadow(0 0 20px rgba(50, 205, 50, 0.5)); 
+    }
+    50% { 
+        filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3)) drop-shadow(0 0 30px rgba(50, 205, 50, 0.8)) drop-shadow(0 0 40px rgba(163, 255, 0, 0.3)); 
+    }
+}
+
 .hero-text p {
     font-size: 1.3rem;
     line-height: 1.7;
@@ -557,10 +575,10 @@ main {
 }
 
 .bg-dark-transparent {
-    background: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: rgba(50, 205, 50, 0.1);
+    border: 1px solid rgba(50, 205, 50, 0.2);
     border-radius: 16px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 25px rgba(50, 205, 50, 0.15);
 }
 
 .btn-professional {
@@ -670,11 +688,11 @@ main {
 }
 
 .card-paciente {
-    background: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: linear-gradient(145deg, rgba(50, 205, 50, 0.1) 0%, rgba(163, 255, 0, 0.05) 100%);
+    border: 2px solid rgba(50, 205, 50, 0.3);
     border-radius: 16px;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 15px rgba(50, 205, 50, 0.2);
 }
 
 .card-paciente:hover {
@@ -684,14 +702,147 @@ main {
 }
 
 .card-paciente .card-title {
-    font-weight: 600;
-    color: var(--civet-black);
+    font-weight: 700;
+    color: #000000;
     font-size: 1.3rem;
 }
 
 .card-paciente .card-text {
     color: rgba(0, 0, 0, 0.8);
     font-weight: 400;
+}
+
+/* ESTILOS PARA FICHAS MÉDICAS */
+.card-ficha {
+    background: linear-gradient(145deg, rgba(50, 205, 50, 0.08) 0%, rgba(163, 255, 0, 0.03) 100%);
+    border: 2px solid rgba(50, 205, 50, 0.25);
+    border-radius: 18px;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(50, 205, 50, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.card-ficha::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(163, 255, 0, 0.1) 50%, 
+        transparent 100%);
+    transition: left 0.5s ease;
+}
+
+.card-ficha:hover::before {
+    left: 100%;
+}
+
+.card-ficha:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 35px rgba(50, 205, 50, 0.25);
+    border-color: var(--civet-green);
+}
+
+.card-ficha .card-title {
+    font-weight: 700;
+    color: var(--civet-black);
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.card-ficha .card-text {
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+}
+
+.card-ficha .card-text strong {
+    color: var(--civet-green);
+}
+
+/* BOTONES DE FICHAS */
+.card-ficha .btn-warning {
+    background: linear-gradient(135deg, var(--civet-green) 0%, #32CD32 100%);
+    border: none;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.card-ficha .btn-warning:hover {
+    background: linear-gradient(135deg, #32CD32 0%, var(--civet-green) 100%);
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(50, 205, 50, 0.4);
+}
+
+.card-ficha .btn-delete {
+    background: linear-gradient(135deg, #dc3545 0%, #b02a37 100%);
+    border: none;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.card-ficha .btn-delete:hover {
+    background: linear-gradient(135deg, #b02a37 0%, #dc3545 100%);
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+}
+
+/* FORMULARIO DE FICHAS */
+#module-ficha-paciente .card {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(200, 255, 142, 0.1) 100%);
+    border: 2px solid rgba(50, 205, 50, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+#module-ficha-paciente .form-control {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(50, 205, 50, 0.2);
+    border-radius: 15px;
+    font-weight: 500;
+}
+
+#module-ficha-paciente .form-control:focus {
+    border-color: var(--civet-green);
+    box-shadow: 0 0 0 0.2rem rgba(50, 205, 50, 0.15);
+}
+
+#module-ficha-paciente .btn-professional {
+    background: linear-gradient(135deg, var(--civet-green) 0%, #32CD32 100%);
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 0.75rem 2rem;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+#module-ficha-paciente .btn-professional:hover {
+    background: linear-gradient(135deg, #32CD32 0%, var(--civet-green) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(50, 205, 50, 0.4);
+}
+
+#module-ficha-paciente .btn-secondary {
+    background: rgba(108, 117, 125, 0.8);
+    border: 2px solid rgba(108, 117, 125, 0.3);
+    color: white;
+    font-weight: 600;
+    padding: 0.75rem 2rem;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+#module-ficha-paciente .btn-secondary:hover {
+    background: rgba(108, 117, 125, 1);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(108, 117, 125, 0.3);
 }
 
 /* INPUTS Y FORMS MEJORADOS */
@@ -797,26 +948,6 @@ main {
     100% {
         background-position: 1000px 0;
     }
-}
-
-.card-paciente::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.2),
-        transparent
-    );
-    transition: left 0.5s;
-}
-
-.card-paciente:hover::before {
-    left: 100%;
 }
 
 /* SCROLLBAR PERSONALIZADA - OCULTA */
@@ -943,6 +1074,42 @@ body {
 /* ============================================
    ESTILOS PARA LA PÁGINA "QUIENES SOMOS" 💚
    ============================================ */
+
+/* PAGINACIÓN PERSONALIZADA */
+.pagination .page-link {
+    background-color: #000000 !important;
+    border-color: #000000 !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.pagination .page-link:hover {
+    background-color: #333333 !important;
+    border-color: #333333 !important;
+    color: #ffffff !important;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--civet-green) !important;
+    border-color: var(--civet-green) !important;
+    color: #ffffff !important;
+}
+
+/* ESTILOS PARA MÓDULO CONTACTO */
+#module-contacto strong {
+    font-weight: 900 !important;
+    color: var(--civet-black) !important;
+}
+
+/* ============================================ */
+
+/* TÍTULOS CENTRADOS */
+.titulo-centrado {
+    text-align: center !important;
+    margin: 0 auto !important;
+    display: block !important;
+    width: 100% !important;
+}
 
 /* Línea decorativa bajo el título */
 .decorative-line {
