@@ -66,9 +66,9 @@ class CarritoView {
                     </div>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group btn-group-sm" role="group">
-                            <button class="btn btn-outline-secondary btn-disminuir" data-id="${item.producto.id}">-</button>
+                            <button class="btn btn-dark fw-bold btn-disminuir" data-id="${item.producto.id}">-</button>
                             <button class="btn btn-outline-secondary" disabled>${item.cantidad}</button>
-                            <button class="btn btn-outline-secondary btn-aumentar" data-id="${item.producto.id}">+</button>
+                            <button class="btn btn-dark fw-bold btn-aumentar" data-id="${item.producto.id}">+</button>
                         </div>
                         <strong class="text-dark">$${(item.producto.precio * item.cantidad).toLocaleString('es-AR')}</strong>
                     </div>
