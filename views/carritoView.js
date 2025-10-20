@@ -22,7 +22,7 @@ class CarritoView {
                                 <h5 class="card-title mb-2">${producto.nombre}</h5>
                                 <span class="badge bg-success mb-3">${producto.categoria}</span>
                                 <div class="d-flex justify-content-between align-items-center mt-auto">
-                                    <strong class="text-success fs-4">$${producto.precio.toLocaleString('es-AR')}</strong>
+                                    <strong class="text-dark fs-4">$${producto.precio.toLocaleString('es-AR')}</strong>
                                 </div>
                             </div>
                             <button class="btn btn-professional btn-lg w-100 mt-3 btn-agregar" data-id="${producto.id}">
@@ -70,7 +70,7 @@ class CarritoView {
                             <button class="btn btn-outline-secondary" disabled>${item.cantidad}</button>
                             <button class="btn btn-outline-secondary btn-aumentar" data-id="${item.producto.id}">+</button>
                         </div>
-                        <strong class="text-success">$${(item.producto.precio * item.cantidad).toLocaleString('es-AR')}</strong>
+                        <strong class="text-dark">$${(item.producto.precio * item.cantidad).toLocaleString('es-AR')}</strong>
                     </div>
                 </div>
             `;
