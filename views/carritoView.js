@@ -16,7 +16,7 @@ class CarritoView {
                     <div class="card card-paciente h-100">
                         <div class="card-body d-flex flex-column">
                             <div class="text-center mb-3">
-                                <span style="font-size: 4rem;">${producto.imagen}</span>
+                                <img src="${producto.imagen}" alt="${producto.nombre}" class="img-fluid" style="max-height: 200px; object-fit: cover;">
                             </div>
                             <div class="flex-grow-1">
                                 <h5 class="card-title mb-2">${producto.nombre}</h5>
