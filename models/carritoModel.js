@@ -3,14 +3,13 @@ class CarritoModel {
     constructor() {
         // Productos disponibles en la tienda
         this.productos = [
-            { id: 1, nombre: 'Alimento Premium Perro 15kg', precio: 12500, imagen: '🐕', categoria: 'Alimento' },
-            { id: 2, nombre: 'Alimento Premium Gato 7.5kg', precio: 8900, imagen: '🐈', categoria: 'Alimento' },
-            { id: 3, nombre: 'Arena Sanitaria 10kg', precio: 3200, imagen: '📦', categoria: 'Higiene' },
-            { id: 4, nombre: 'Collar Antipulgas', precio: 2100, imagen: '⭕', categoria: 'Salud' },
-            { id: 5, nombre: 'Juguete Interactivo', precio: 1500, imagen: '🎾', categoria: 'Juguetes' },
-            { id: 6, nombre: 'Cama Mascota Grande', precio: 8500, imagen: '🛏️', categoria: 'Accesorios' },
-            { id: 7, nombre: 'Shampoo Medicado 500ml', precio: 1800, imagen: '🧴', categoria: 'Higiene' },
-            { id: 8, nombre: 'Plato Doble Acero Inox', precio: 2400, imagen: '🍽️', categoria: 'Accesorios' }
+            { id: 1, nombre: 'Alimento Gato Premium', precio: 8900, imagen: 'images/alimentogato.jpg', categoria: 'Alimento' },
+            { id: 2, nombre: 'Cama Mascota Confortable', precio: 8500, imagen: 'images/camamascota.jpg', categoria: 'Accesorios' },
+            { id: 3, nombre: 'Juguete Interactivo Mascota', precio: 1500, imagen: 'images/juguetemascota.webp', categoria: 'Juguetes' },
+            { id: 4, nombre: 'Natuta Choice Adulto x2kg', precio: 4200, imagen: 'images/NATURAL-CHOICE-ADULTO-X-20-KG.jpg.webp', categoria: 'Alimento' },
+            { id: 5, nombre: 'Piedras Sanitarias Premium', precio: 3200, imagen: 'images/piedrassanitarias.webp', categoria: 'Higiene' },
+            { id: 6, nombre: 'Plato Mascota Diseño', precio: 2400, imagen: 'images/platomascota.webp', categoria: 'Accesorios' },
+            { id: 7, nombre: 'Shampoo Mascota Medicinal', precio: 1800, imagen: 'images/shampoomascotal.png', categoria: 'Higiene' }
         ];
         
         // Items en el carrito (cada item tiene: producto + cantidad)
