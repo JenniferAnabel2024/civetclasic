@@ -1,0 +1,12 @@
+{
+  "name": "civet-clasic",
+  "version": "1.0.0",
+  "description": "CIVET - Terminal Veterinario (Versión Clásica)",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'Static site - no build needed'"
+  },
+  "keywords": ["veterinaria", "web"],
+  "author": "Jennifer Anabel",
+  "license": "MIT"
+}
