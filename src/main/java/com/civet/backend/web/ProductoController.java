@@ -4,24 +4,29 @@ import com.civet.backend.entity.Producto;
 import com.civet.backend.repo.ProductoRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
-@RestController @RequestMapping("/api/productos")
+@RestController
+@RequestMapping("/api/productos")
+@CrossOrigin
 public class ProductoController {
-    private final ProductoRepository repo;
-    public ProductoController(ProductoRepository repo){ this.repo = repo; }
 
-    @GetMapping public List<Producto> list(){ return repo.findAll(); }
-    @GetMapping("/{id}") public ResponseEntity<Producto> get(@PathVariable Long id){
-        return repo.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    private final ProductoRepository repo;
+
+    public ProductoController(ProductoRepository repo) {
+        this.repo = repo;
     }
-    @PostMapping public Producto create(@RequestBody Producto p){ p.setId(null); return repo.save(p); }
-    @PutMapping("/{id}") public ResponseEntity<Producto> update(@PathVariable Long id, @RequestBody Producto p){
-        if(!repo.existsById(id)) return ResponseEntity.notFound().build();
-        p.setId(id); return ResponseEntity.ok(repo.save(p));
+
+    @GetMapping
+    public List<Producto> listar() {
+        return repo.findAll();
     }
-    @DeleteMapping("/{id}") public ResponseEntity<Void> delete(@PathVariable Long id){
-        if(!repo.existsById(id)) return ResponseEntity.notFound().build();
-        repo.deleteById(id); return ResponseEntity.noContent().build();
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Producto> get(@PathVariable("id") Long id) {
+        return repo.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }

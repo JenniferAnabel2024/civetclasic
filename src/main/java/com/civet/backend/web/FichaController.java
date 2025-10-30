@@ -1,59 +1,72 @@
 package com.civet.backend.web;
 
-import com.civet.backend.dto.FichaDto;
 import com.civet.backend.entity.Ficha;
+import com.civet.backend.entity.Medico;
 import com.civet.backend.entity.Paciente;
 import com.civet.backend.repo.FichaRepository;
+import com.civet.backend.repo.MedicoRepository;
 import com.civet.backend.repo.PacienteRepository;
+import com.civet.backend.dto.FichaRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
-@RestController @RequestMapping("/api/fichas")
+@RestController
+@RequestMapping("/api/fichas")
+@CrossOrigin 
 public class FichaController {
-    private final FichaRepository repo;
+
+    private final FichaRepository fichaRepo;
     private final PacienteRepository pacienteRepo;
-    public FichaController(FichaRepository repo, PacienteRepository pacienteRepo){
-        this.repo = repo; this.pacienteRepo = pacienteRepo;
+    private final MedicoRepository medicoRepo;
+
+    public FichaController(FichaRepository fichaRepo,
+                           PacienteRepository pacienteRepo,
+                           MedicoRepository medicoRepo) {
+        this.fichaRepo = fichaRepo;
+        this.pacienteRepo = pacienteRepo;
+        this.medicoRepo = medicoRepo;
     }
 
-    @GetMapping public List<Ficha> list(){ return repo.findAll(); }
-    @GetMapping("/{id}") public ResponseEntity<Ficha> get(@PathVariable Long id){
-        return repo.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-    @PostMapping public ResponseEntity<Ficha> create(@RequestBody FichaDto dto){
-        Paciente pac = resolvePaciente(dto);
-        if(pac == null) return ResponseEntity.badRequest().build();
+    @PostMapping
+    public ResponseEntity<Ficha> crear(@RequestBody FichaRequest r) {
+        Paciente paciente = pacienteRepo.findById(r.pacienteId())
+                .orElseThrow(() -> new IllegalArgumentException("Paciente no encontrado"));
+        Medico medico = medicoRepo.findById(r.medicoId())
+                .orElseThrow(() -> new IllegalArgumentException("Médico no encontrado"));
+
         Ficha f = new Ficha();
-        f.setPaciente(pac);
-        f.setNombreMedico(dto.nombreMedico);
-        f.setFecha(dto.fecha);
-        f.setSintomas(dto.sintomas);
-        f.setObservaciones(dto.observaciones);
-        return ResponseEntity.ok(repo.save(f));
-    }
-    @PutMapping("/{id}") public ResponseEntity<Ficha> update(@PathVariable Long id, @RequestBody FichaDto dto){
-        if(!repo.existsById(id)) return ResponseEntity.notFound().build();
-        Paciente pac = resolvePaciente(dto);
-        if(pac == null) return ResponseEntity.badRequest().build();
-        Ficha f = repo.findById(id).orElseThrow();
-        f.setPaciente(pac);
-        f.setNombreMedico(dto.nombreMedico);
-        f.setFecha(dto.fecha);
-        f.setSintomas(dto.sintomas);
-        f.setObservaciones(dto.observaciones);
-        return ResponseEntity.ok(repo.save(f));
-    }
-    @DeleteMapping("/{id}") public ResponseEntity<Void> delete(@PathVariable Long id){
-        if(!repo.existsById(id)) return ResponseEntity.notFound().build();
-        repo.deleteById(id); return ResponseEntity.noContent().build();
+        f.setPaciente(paciente);
+        f.setMedico(medico);
+        f.setFecha(r.fecha());
+        f.setDiagnostico(r.diagnostico());
+        f.setTratamiento(r.tratamiento());
+        f.setCosto(r.costo());
+
+        return ResponseEntity.ok(fichaRepo.save(f));
     }
 
-    private Paciente resolvePaciente(FichaDto dto){
-        Long id = null;
-        if(dto.pacienteId != null) id = dto.pacienteId;
-        else if(dto.paciente != null) id = dto.paciente.id;
-        if(id == null) return null;
-        return pacienteRepo.findById(id).orElse(null);
+    @GetMapping
+    public List<Ficha> listar(@RequestParam(value = "pacienteId", required = false) Long pacienteId) {
+        return (pacienteId == null)
+                ? fichaRepo.findAll()
+                : fichaRepo.findByPacienteId(pacienteId);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Ficha> get(@PathVariable Long id) {
+        return fichaRepo.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> borrar(@PathVariable Long id) {
+        if (!fichaRepo.existsById(id)) return ResponseEntity.notFound().build();
+        fichaRepo.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }
+
+
