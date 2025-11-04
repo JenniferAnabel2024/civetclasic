@@ -27,7 +27,8 @@ public class CarritoItem {
 
     private Integer cantidad;
 
-    @Column(name = "precio_unitario")
+    // *** IMPORTANTE: coincide con la columna real de la tabla: `precio_unit`
+    @Column(name = "precio_unit", nullable = false)
     private BigDecimal precioUnitario;
 
     @Transient

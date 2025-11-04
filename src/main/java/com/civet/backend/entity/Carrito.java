@@ -35,8 +35,8 @@ public class Carrito {
 
     @PrePersist
     public void prePersist() {
-        if (createdAt == null) createdAt = LocalDateTime.now();
-        if (estado == null) estado = Estado.ABIERTO;
+        if (this.createdAt == null) this.createdAt = LocalDateTime.now();
+        if (this.estado == null) this.estado = Estado.ABIERTO;
     }
 
     // helpers
@@ -65,3 +65,4 @@ public class Carrito {
     public List<CarritoItem> getItems() { return items; }
     public void setItems(List<CarritoItem> items) { this.items = items; }
 }
+

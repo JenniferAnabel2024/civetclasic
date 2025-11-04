@@ -1,17 +1,7 @@
 package com.civet.backend.web;
 
-import com.civet.backend.entity.Carrito;
-import com.civet.backend.entity.CarritoItem;
-import com.civet.backend.entity.Paciente;
-import com.civet.backend.entity.Producto;
-import com.civet.backend.entity.Venta;
-import com.civet.backend.entity.VentaItem;
-import com.civet.backend.repo.CarritoItemRepository;
-import com.civet.backend.repo.CarritoRepository;
-import com.civet.backend.repo.PacienteRepository;
-import com.civet.backend.repo.ProductoRepository;
-import com.civet.backend.repo.VentaItemRepository;
-import com.civet.backend.repo.VentaRepository;
+import com.civet.backend.entity.*;
+import com.civet.backend.repo.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -44,34 +34,56 @@ public class CarritoController {
         this.ventaItemRepo = ventaItemRepo;
     }
 
-    // Crear carrito (paciente opcional)
+    // =======================================================
+    // Crear un carrito nuevo (paciente opcional)
+    // =======================================================
     @PostMapping
     public ResponseEntity<?> crear(@RequestBody(required = false) CrearCarritoRequest req) {
         Carrito c = new Carrito();
+
         if (req != null && req.pacienteId() != null) {
             Paciente p = pacienteRepo.findById(req.pacienteId()).orElse(null);
             c.setPaciente(p);
         }
-        c = carritoRepo.save(c);
-        // devolvemos con items ya cargados (vacío, pero misma forma)
+
+        c.setEstado(Carrito.Estado.ABIERTO);
+        carritoRepo.save(c);
+
         return carritoRepo.findWithItemsById(c.getId())
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.ok(c));
     }
 
-    // Ver carrito (con items + producto)
+    // =======================================================
+    // Ver un carrito con todos sus items
+    // =======================================================
     @GetMapping("/{id}")
+    @Transactional(readOnly = true)
     public ResponseEntity<?> ver(@PathVariable Long id) {
         return carritoRepo.findWithItemsById(id)
-                .map(ResponseEntity::ok)
+                .map(carrito -> {
+                    // ⚡ Forzar inicialización manual
+                    if (carrito.getPaciente() != null) {
+                        carrito.getPaciente().getNombre(); // fuerza carga
+                    }
+                    carrito.getItems().forEach(it -> {
+                        if (it.getProducto() != null) {
+                            it.getProducto().getNombre(); // fuerza carga del producto
+                        }
+                    });
+                    return ResponseEntity.ok(carrito);
+                })
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Agregar item
+    // =======================================================
+    // Agregar un producto al carrito (sin cerrarlo)
+    // =======================================================
     @PostMapping("/{id}/items")
     @Transactional
     public ResponseEntity<?> agregarItem(@PathVariable Long id,
                                          @RequestBody AgregarItemRequest req) {
+
         Carrito c = carritoRepo.findWithItemsById(id).orElse(null);
         if (c == null) return ResponseEntity.notFound().build();
 
@@ -90,15 +102,21 @@ public class CarritoController {
         it.setCantidad(req.cantidad());
         BigDecimal precio = (req.precioUnitario() != null) ? req.precioUnitario() : prod.getPrecio();
         it.setPrecioUnitario(precio);
+
         itemRepo.save(it);
 
-        // devolver carrito actualizado con items cargados
+        // ✅ Mantiene el carrito ABIERTO
+        c.setEstado(Carrito.Estado.ABIERTO);
+        carritoRepo.save(c);
+
         return carritoRepo.findWithItemsById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.ok(c));
     }
 
-    // Quitar item
+    // =======================================================
+    // Eliminar un item del carrito
+    // =======================================================
     @DeleteMapping("/{id}/items/{itemId}")
     @Transactional
     public ResponseEntity<?> quitarItem(@PathVariable Long id,
@@ -113,12 +131,17 @@ public class CarritoController {
 
         itemRepo.delete(it);
 
+        c.setEstado(Carrito.Estado.ABIERTO);
+        carritoRepo.save(c);
+
         return carritoRepo.findWithItemsById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.ok(c));
     }
 
-    // Checkout -> crea Venta + VentaItems
+    // =======================================================
+    // Finalizar compra (Checkout)
+    // =======================================================
     @PostMapping("/{id}/checkout")
     @Transactional
     public ResponseEntity<?> checkout(@PathVariable Long id,
@@ -133,7 +156,7 @@ public class CarritoController {
         Venta v = new Venta();
         v.setCarrito(c);
         v.setClienteNom(c.getPaciente() != null ? c.getPaciente().getNombre()
-                                               : (req != null ? req.clienteNom() : null));
+                : (req != null ? req.clienteNom() : null));
         v.setTotal(BigDecimal.ZERO);
         v = ventaRepo.save(v);
 
@@ -143,7 +166,7 @@ public class CarritoController {
             vi.setVenta(v);
             vi.setProducto(ci.getProducto());
             vi.setCantidad(ci.getCantidad());
-            vi.setPrecioUnit(ci.getPrecioUnitario()); // nombre correcto del setter
+            vi.setPrecioUnit(ci.getPrecioUnitario());
             ventaItemRepo.save(vi);
 
             total = total.add(ci.getPrecioUnitario()
@@ -151,20 +174,19 @@ public class CarritoController {
         }
 
         v.setTotal(total);
-        v = ventaRepo.save(v);
+        ventaRepo.save(v);
 
+        // ✅ Cerrar carrito sólo en checkout
         c.setEstado(Carrito.Estado.CERRADO);
         carritoRepo.save(c);
 
         return ResponseEntity.ok(v);
     }
 
-    // ===== DTOs mínimos del controller =====
+    // =======================================================
+    // DTOs (Records internos)
+    // =======================================================
     public record CrearCarritoRequest(Long pacienteId) {}
     public record AgregarItemRequest(Long productoId, Integer cantidad, BigDecimal precioUnitario) {}
     public record CheckoutRequest(String clienteNom) {}
 }
-
-
-
-

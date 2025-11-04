@@ -8,33 +8,25 @@ class CarritoController {
   }
 
   async init() {
-    // Renderizar productos iniciales
     await this.renderProductos();
 
-    // Event listeners
     $('#btn-vaciar-carrito').on('click', () => this.vaciarCarrito());
     $('#btn-finalizar-compra').on('click', () => this.finalizarCompra());
 
-    // Render inicial del carrito
     await this.actualizarCarrito();
   }
 
-  // =======================
-  // RENDERIZADO DE PRODUCTOS
-  // =======================
+  // ---------- productos ----------
   async renderProductos() {
     const productos = await this.model.getProductos();
     this.view.renderProductos(productos, (productoId) => this.agregarAlCarrito(productoId));
   }
 
-  // =======================
-  // OPERACIONES CRUD
-  // =======================
+  // ---------- CRUD carrito ----------
   async agregarAlCarrito(productoId) {
     await this.model.agregarAlCarrito(productoId);
     await this.actualizarCarrito();
 
-    // Animación visual
     const button = $(`.btn-agregar[data-id="${productoId}"]`);
     this.view.animarAgregarCarrito(button);
   }
@@ -56,11 +48,10 @@ class CarritoController {
 
   async vaciarCarrito() {
     const carrito = await this.model.getCarrito();
-    if (carrito.length === 0) {
+    if (!carrito.items || carrito.items.length === 0) {
       alert('El carrito ya está vacío');
       return;
     }
-
     if (confirm('¿Estás seguro de que quieres vaciar el carrito?')) {
       await this.model.vaciarCarrito();
       await this.actualizarCarrito();
@@ -69,8 +60,7 @@ class CarritoController {
 
   async finalizarCompra() {
     const carrito = await this.model.getCarrito();
-
-    if (carrito.length === 0) {
+    if (!carrito.items || carrito.items.length === 0) {
       alert('El carrito está vacío. Agrega productos antes de finalizar la compra.');
       return;
     }
@@ -78,30 +68,33 @@ class CarritoController {
     const total = this.model.calcularTotal();
     const cantidadItems = this.model.getCantidadTotal();
 
-    // Mostrar mensaje de éxito
     this.view.mostrarMensajeCompra(total, cantidadItems);
 
-    // Vaciar carrito después de la compra
     await this.model.vaciarCarrito();
     await this.actualizarCarrito();
   }
 
-  // =======================
-  // RENDERIZADO DE CARRITO
-  // =======================
+  // ---------- render ----------
   async actualizarCarrito() {
-    const items = await this.model.getCarrito();
+    const [carrito, productos] = await Promise.all([
+      this.model.getCarrito(),
+      this.model.getProductos()
+    ]);
+
     const total = this.model.calcularTotal();
 
     this.view.renderCarrito(
-      items,
+      carrito,    // 👈 objeto completo
+      productos,
       (id) => this.aumentarCantidad(id),
       (id) => this.disminuirCantidad(id),
       (id) => this.eliminarDelCarrito(id)
     );
 
     this.view.actualizarTotal(total);
+    console.log('🧾 Carrito actualizado:', carrito);
   }
 }
 
 export default CarritoController;
+

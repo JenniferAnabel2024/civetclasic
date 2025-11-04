@@ -156,15 +156,14 @@
                     <option value="">Selecciona un Paciente</option>
                   </select>
                 </div>
+
+                <!-- 🔧 CAMBIO: input -> select con IDs -->
                 <div class="mb-3">
-                  <input
-                    type="text"
-                    id="nombre-medico"
-                    class="form-control"
-                    placeholder="Nombre del Médico"
-                    required
-                  />
+                  <select id="medico-id" class="form-control" required>
+                    <option value="">Selecciona un Médico</option>
+                  </select>
                 </div>
+
                 <div class="mb-3">
                   <input type="date" id="fecha-ficha" class="form-control" required />
                 </div>
@@ -318,3 +317,4 @@
   <script type="module" src="app.js"></script>
 </body>
 </html>
+
