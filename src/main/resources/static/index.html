@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CIVET - Terminal Veterinario (Versión Clásica)</title>
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="styles.css?v=10" />
+</head>
+<body>
+  <div class="d-flex flex-column vh-100">
+   
+
+    <!-- HEADER -->
+    <header class="terminal-header">
+      <div class="logo">
+        <a href="#" data-module="inicio">
+          <img src="images/logocivet.jpg" alt="Civet Logo" />
+        </a>
+      </div>
+      <nav id="navigation">
+        <a href="#" class="nav-link" data-module="inicio">Inicio</a>
+        <a href="#" class="nav-link" data-module="quienes-somos">Quienes somos</a>
+        <a href="#" class="nav-link" data-module="pacientes">Nuestros Pacientes</a>
+        <a href="#" class="nav-link" data-module="ficha-paciente">📋 Ficha Paciente</a>
+        <a href="#" class="nav-link" data-module="contacto">Contacto</a>
+        <a href="#" class="nav-link" data-module="carrito">🛒 Tienda</a>
+      </nav>
+    </header>
+
+    <!-- MAIN -->
+    <main class="flex-grow-1 overflow-auto">
+      <div id="modules">
+        <!-- Módulo Inicio -->
+        <div id="module-inicio" class="module">
+          <main class="hero-content">
+            <div class="hero-text">
+              <h1>Bienvenido a CIVET</h1>
+              <p class="hero-description">
+                La salud de tu mascota es nuestra prioridad. Ofrecemos atención integral con profesionales apasionados por los animales.
+              </p>
+              <a href="#" class="cta-button" data-module="contacto">Pedir un Turno</a>
+            </div>
+          </main>
+        </div>
+
+        <!-- Módulo Quienes Somos -->
+        <div id="module-quienes-somos" class="module" style="display: none;">
+          <div class="container py-5">
+            <div class="text-center mb-5">
+              <h2 class="display-4 fw-bold text-dark mb-3">
+                Cuidamos de tu familia como si fuera la nuestra
+              </h2>
+              <div class="decorative-line mx-auto"></div>
+            </div>
+            <div class="row align-items-center mb-5">
+              <div class="col-lg-6 mb-4 mb-lg-0">
+                <div class="about-image-container">
+                  <img
+                    src="images/vetelocalacentuado.PNG"
+                    alt="Equipo CIVET"
+                    class="img-fluid rounded-4 shadow-lg about-main-image"
+                  />
+                  <div class="image-overlay"></div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="about-content ps-lg-4">
+                  <h3 class="h2 mb-4 text-black fw-bold">💚 Nuestra Misión</h3>
+                  <p class="lead text-black mb-4 fw-bold">
+                    En CIVET, entendemos que no son solo mascotas; son compañeros de vida, guardianes de secretos y una parte insustituible de tu familia.
+                  </p>
+                  <p class="text-black fw-bold">
+                    Con esa convicción, hemos construido nuestro legado: un lugar donde la calidez del hogar se encuentra con la excelencia médica.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Módulo Pacientes -->
+        <div id="module-pacientes" class="module" style="display: none;">
+          <div class="container py-5">
+            <h2 class="fw-bold mb-4">🐾 Nuestros Pacientes</h2>
+
+            <!-- Formulario: Crear Paciente -->
+            <div class="card p-3 bg-dark-transparent mb-4">
+              <h5 class="mb-3 fw-bold">Añadir Paciente</h5>
+              <form id="form-paciente">
+                <div class="row g-2">
+                  <div class="col-md-4">
+                    <input
+                      type="text"
+                      id="pac-nombre"
+                      class="form-control"
+                      placeholder="Nombre del paciente"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-4">
+                    <input
+                      type="text"
+                      id="pac-especie"
+                      class="form-control"
+                      placeholder="Especie (Canino, Felino...)"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-4">
+                    <input
+                      type="text"
+                      id="pac-imagen"
+                      class="form-control"
+                      placeholder="Imagen (opcional, ej: perro.jpg)"
+                    />
+                  </div>
+                </div>
+                <div class="mt-3">
+                  <button type="submit" class="btn btn-professional">Guardar</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Lista de Pacientes -->
+            <div class="card p-3 bg-dark-transparent">
+              <h5 class="mb-3 fw-bold">Mascotas Atendidas</h5>
+              <div id="lista-pacientes" class="row">
+                <!-- Render dinámico -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Módulo Ficha Paciente -->
+        <div id="module-ficha-paciente" class="module" style="display: none;">
+          <div class="container py-5">
+            <h2 class="fw-bold mb-4 text-center">📋 Ficha Médica de Pacientes</h2>
+            <div class="card p-3 bg-dark-transparent mb-4">
+              <form id="form-ficha">
+                <input type="hidden" id="ficha-index" value="" />
+                <div class="mb-3">
+                  <select id="nombre-paciente" class="form-control" required>
+                    <option value="">Selecciona un Paciente</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <input
+                    type="text"
+                    id="nombre-medico"
+                    class="form-control"
+                    placeholder="Nombre del Médico"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <input type="date" id="fecha-ficha" class="form-control" required />
+                </div>
+                <div class="mb-3">
+                  <input
+                    type="text"
+                    id="diagnostico-ficha"
+                    class="form-control"
+                    placeholder="Diagnóstico"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <input
+                    type="text"
+                    id="tratamiento-ficha"
+                    class="form-control"
+                    placeholder="Tratamiento"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <input
+                    type="number"
+                    id="costo-ficha"
+                    class="form-control"
+                    placeholder="Costo ($)"
+                    step="0.01"
+                    required
+                  />
+                </div>
+                <button
+                  type="submit"
+                  id="btn-submit-ficha"
+                  class="btn btn-professional"
+                >
+                  Añadir Ficha
+                </button>
+                <button
+                  type="button"
+                  id="btn-cancel-edit"
+                  class="btn btn-secondary ms-2"
+                  style="display: none;"
+                >
+                  Cancelar
+                </button>
+              </form>
+            </div>
+
+            <h3 class="fw-bold mb-4 text-center">📋 Lista de Fichas Médicas</h3>
+            <div id="lista-fichas" class="row"></div>
+            <div
+              id="paginacion-fichas"
+              class="d-flex justify-content-center mt-4"
+            ></div>
+          </div>
+        </div>
+
+        <!-- Módulo Contacto -->
+        <div id="module-contacto" class="module" style="display: none;">
+          <div class="container py-5">
+            <div class="card p-4 bg-dark-transparent">
+              <h2 class="text-center mb-4">Contacto</h2>
+              <div class="row">
+                <div class="col-md-6" style="margin-top: 100px;">
+                  <h3 class="fw-bold mb-4">Información de Contacto</h3>
+                  <p><strong>📍 Dirección:</strong> Calle Roca 574, Las Heras, Mendoza</p>
+                  <p><strong>📞 Celular:</strong> +54 9 2612 50-2161</p>
+                  <p><strong>📞 Fijo:</strong> 4309982</p>
+                  <p><strong>📧 Email:</strong> civet@gmail.com</p>
+                </div>
+                <div class="col-md-6">
+                  <h4>Ubicación</h4>
+                  <iframe
+                    src="https://maps.google.com/maps?q=Calle%20Roca%20574,%20Las%20Heras,%20Mendoza,%20Argentina&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                    width="100%"
+                    height="300"
+                    frameborder="0"
+                    style="border: 0;"
+                    allowfullscreen
+                  ></iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Módulo Carrito -->
+        <div id="module-carrito" class="module" style="display: none;">
+          <div class="container py-5">
+            <h2 class="mb-4">🛒 Tienda Veterinaria</h2>
+            <div class="row g-4">
+              <div class="col-lg-8">
+                <div class="card p-4 bg-dark-transparent shadow-lg">
+                  <h4 class="mb-4">Productos Disponibles</h4>
+                  <div id="productos-disponibles" class="row g-3"></div>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="card p-4 bg-dark-transparent shadow-lg sticky-top">
+                  <h4 class="mb-4">🛒 Mi Carrito</h4>
+                  <div id="items-carrito" style="max-height: 400px; overflow-y: auto;">
+                    <p class="text-muted">El carrito está vacío</p>
+                  </div>
+                  <hr class="my-3" />
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <strong class="fs-5">Total:</strong>
+                    <strong id="total-carrito" class="text-dark fs-3">$0.00</strong>
+                  </div>
+                  <button id="btn-vaciar-carrito" class="btn btn-professional w-100 mb-2">
+                    Vaciar Carrito
+                  </button>
+                  <button id="btn-finalizar-compra" class="btn btn-professional w-100">
+                    Finalizar Compra
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="terminal-footer p-2 text-center">
+      <p class="mb-0">
+        &copy; 2025 CIVET (Centro Integral Veterinario). Todos los derechos reservados.
+      </p>
+    </footer>
+  </div>
+
+  <!-- WhatsApp Panic Button -->
+  <a href="https://wa.me/5492612502161" class="whatsapp-panic" target="_blank">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="32"
+      height="32"
+      fill="currentColor"
+      class="bi bi-whatsapp"
+      viewBox="0 0 16 16"
+    >
+      <path
+        d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592"
+      />
+    </svg>
+  </a>
+
+  <!-- JS -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
