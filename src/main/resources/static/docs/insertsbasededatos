@@ -1,0 +1,17 @@
+USE civetdb;
+SELECT * FROM pacientes;
+INSERT INTO pacientes (nombre, especie, imagen) VALUES
+ ('Rex', 'Canino', 'perro.jpg'),
+ ('Mishi', 'Felino', 'gato.jpg');
+ ------------------------------------------------------------------------------------------------
+ PARA QUE NO APAREZACN MEDICOS DUPLICADOS 
+ USE civetdb;
+SELECT * FROM medicos;
+USE civetdb;
+
+DELETE m1 FROM medicos m1
+INNER JOIN medicos m2 
+WHERE m1.id > m2.id 
+AND m1.nombre = m2.nombre;
+SELECT * FROM medicos;
+------------------------------------------------------------------------------------------------
