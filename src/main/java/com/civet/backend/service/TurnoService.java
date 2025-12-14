@@ -33,4 +33,19 @@ public class TurnoService {
     public void eliminarTurno(Long id) {
         turnoRepository.deleteById(id);
     }
+
+    // 5. Actualizar un turno (Update)
+    public Turno actualizarTurno(Long id, Turno turnoActualizado) {
+        Optional<Turno> turnoExistente = turnoRepository.findById(id);
+        if (turnoExistente.isPresent()) {
+            Turno turno = turnoExistente.get();
+            turno.setFechaHora(turnoActualizado.getFechaHora());
+            turno.setMotivo(turnoActualizado.getMotivo());
+            turno.setPaciente(turnoActualizado.getPaciente());
+            turno.setMedico(turnoActualizado.getMedico());
+            return turnoRepository.save(turno);
+        } else {
+            throw new RuntimeException("Turno no encontrado con ID: " + id);
+        }
+    }
 }

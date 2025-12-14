@@ -45,10 +45,10 @@
 
         <div id="module-turnos" class="module" style="display: none;">
           <div class="container py-5">
-            <h2 class="fw-bold mb-4">📅 Gestión de Turnos</h2>
+            <h2 class="text-dark fw-bold mb-4">📅 Gestión de Turnos</h2>
 
             <div class="card p-4 bg-dark-transparent mb-4 shadow">
-              <h4 class="mb-3 text-white">Nuevo Turno</h4>
+              <h4 class="mb-3 text-dark fw-bold">Nuevo Turno</h4>
               <div class="row g-2">
                 <div class="col-md-6">
                   <select id="selPaciente" class="form-select">
@@ -76,7 +76,7 @@
             </div>
 
             <div class="card p-4 bg-dark-transparent shadow">
-              <h4 class="mb-3 text-white">Turnos Programados</h4>
+              <h4 class="mb-3 text-dark fw-bold">Turnos Programados</h4>
               <ul id="listaTurnos" class="list-group">
                 <li class="list-group-item text-muted">Cargando turnos...</li>
               </ul>
@@ -233,6 +233,7 @@
 
   <script>
     const API_URL = "http://localhost:8080/api/turnos";
+    let turnoEditandoId = null; // Variable para saber si estamos editando
 
     // 1. Cargar turnos (FUNCIÓN BLINDADA CONTRA ERRORES)
     async function cargarTurnos() {
@@ -261,12 +262,15 @@
                     lista.innerHTML += `
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         <div>
-                            <strong>#${turno.id}</strong> - ${turno.motivo}<br>
+                            <strong>• ${turno.motivo}</strong><br>
                             <small class="text-muted">
                                 📅 ${fecha} ${hora} | 🐾 ${turno.paciente?.nombre || 'Sin paciente'} | 👨‍⚕️ ${turno.medico?.nombre || 'Sin médico'}
                             </small>
                         </div>
-                        <button class="btn btn-danger btn-sm" onclick="eliminarTurno(${turno.id})">X</button>
+                        <div>
+                            <button class="btn btn-warning btn-sm me-1" onclick="editarTurno(${turno.id})">✏️</button>
+                            <button class="btn btn-danger btn-sm" onclick="eliminarTurno(${turno.id})">X</button>
+                        </div>
                     </li>
                     `;
                 });
@@ -342,12 +346,7 @@
           });
 
           if(res.ok) {
-            // Limpiar formulario
-            document.getElementById('selPaciente').value = "";
-            document.getElementById('selMedico').value = "";
-            document.getElementById('txtFecha').value = "";
-            document.getElementById('txtHora').value = "";
-            document.getElementById('txtMotivo').value = "";
+            limpiarFormulario();
             cargarTurnos();
             alert("Turno agendado exitosamente!");
           } else {
@@ -356,6 +355,60 @@
       } catch (e) {
           alert("No se pudo conectar con el servidor.");
       }
+    }
+
+    // 2.5 Actualizar Turno
+    async function actualizarTurno() {
+      const pacienteId = document.getElementById('selPaciente').value;
+      const medicoId = document.getElementById('selMedico').value;
+      const fecha = document.getElementById('txtFecha').value;
+      const hora = document.getElementById('txtHora').value;
+      const motivo = document.getElementById('txtMotivo').value;
+
+      if(!pacienteId || !medicoId || !fecha || !hora || !motivo) {
+        return alert("Completa todos los campos: paciente, médico, fecha, hora y motivo");
+      }
+
+      // Combinar fecha y hora en formato ISO
+      const fechaHora = `${fecha}T${hora}:00`;
+
+      try {
+          const res = await fetch(API_URL + "/" + turnoEditandoId, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              fechaHora: fechaHora,
+              motivo: motivo,
+              paciente: { id: parseInt(pacienteId) },
+              medico: { id: parseInt(medicoId) }
+            })
+          });
+
+          if(res.ok) {
+            limpiarFormulario();
+            cargarTurnos();
+            alert("Turno actualizado exitosamente!");
+          } else {
+            alert("Error al actualizar el turno");
+          }
+      } catch (e) {
+          alert("No se pudo conectar con el servidor.");
+      }
+    }
+
+    // Función para limpiar formulario y resetear estado
+    function limpiarFormulario() {
+      document.getElementById('selPaciente').value = "";
+      document.getElementById('selMedico').value = "";
+      document.getElementById('txtFecha').value = "";
+      document.getElementById('txtHora').value = "";
+      document.getElementById('txtMotivo').value = "";
+      const btn = document.querySelector('button[onclick*="guardarTurno"], button[onclick*="actualizarTurno"]');
+      if (btn) {
+        btn.textContent = 'Agendar Turno';
+        btn.setAttribute('onclick', 'guardarTurno()');
+      }
+      turnoEditandoId = null;
     }
 
     // 3. Eliminar Turno
@@ -367,6 +420,30 @@
         } catch (e) {
             alert("Error al eliminar.");
         }
+      }
+    }
+
+    // 3.5 Editar Turno
+    async function editarTurno(id) {
+      try {
+        const res = await fetch(API_URL + "/" + id);
+        const turno = await res.json();
+
+        // Prellenar formulario
+        document.getElementById('selPaciente').value = turno.paciente?.id || '';
+        document.getElementById('selMedico').value = turno.medico?.id || '';
+        document.getElementById('txtFecha').value = turno.fechaHora.split('T')[0];
+        document.getElementById('txtHora').value = turno.fechaHora.split('T')[1].substring(0, 5);
+        document.getElementById('txtMotivo').value = turno.motivo;
+
+        // Cambiar botón a "Actualizar"
+        const btn = document.querySelector('button[onclick="guardarTurno()"]');
+        btn.textContent = 'Actualizar Turno';
+        btn.setAttribute('onclick', 'actualizarTurno()');
+
+        turnoEditandoId = id;
+      } catch (e) {
+        alert("Error al cargar turno para editar.");
       }
     }
 

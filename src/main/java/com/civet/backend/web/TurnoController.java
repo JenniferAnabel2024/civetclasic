@@ -40,4 +40,10 @@ public class TurnoController {
     public void eliminarTurno(@PathVariable Long id) {
         turnoService.eliminarTurno(id);
     }
+
+    // 5. PUT: Actualizar un turno existente
+    @PutMapping("/{id}")
+    public Turno actualizarTurno(@PathVariable Long id, @RequestBody Turno turno) {
+        return turnoService.actualizarTurno(id, turno);
+    }
 }
